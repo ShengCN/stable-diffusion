@@ -694,12 +694,15 @@ class LatentDiffusion(DDPM):
             if self.use_positional_encodings:
                 pos_x, pos_y = self.compute_latent_shifts(batch)
                 c = {'pos_x': pos_x, 'pos_y': pos_y}
+
         out = [z, c]
         if return_first_stage_outputs:
             xrec = self.decode_first_stage(z)
             out.extend([x, xrec])
+
         if return_original_cond:
             out.append(xc)
+
         return out
 
     @torch.no_grad()
@@ -1407,6 +1410,7 @@ class DiffusionWrapper(pl.LightningModule):
             out = self.diffusion_model(xc, t)
         elif self.conditioning_key == 'crossattn':
             cc = torch.cat(c_crossattn, 1)
+            # print('x: {} context: {}'.format(x.shape, cc.shape))
             out = self.diffusion_model(x, t, context=cc)
         elif self.conditioning_key == 'hybrid':
             xc = torch.cat([x] + c_concat, dim=1)

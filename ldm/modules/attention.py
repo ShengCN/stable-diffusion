@@ -209,10 +209,17 @@ class BasicTransformerBlock(nn.Module):
         return checkpoint(self._forward, (x, context), self.parameters(), self.checkpoint)
 
     def _forward(self, x, context=None):
-        x = self.attn1(self.norm1(x)) + x
-        x = self.attn2(self.norm2(x), context=context) + x
-        x = self.ff(self.norm3(x)) + x
-        return x
+        # try:
+        if True:
+            x = self.attn1(self.norm1(x)) + x
+            x = self.attn2(self.norm2(x), context=context) + x
+            x = self.ff(self.norm3(x)) + x
+            return x
+
+        # except BaseException as err:
+        #     if x.get_device() == 0:
+        #         import pdb; pdb.set_trace()
+
 
 
 class SpatialTransformer(nn.Module):

@@ -534,6 +534,8 @@ if __name__ == "__main__":
         # model
         model = instantiate_from_config(config.model)
 
+        # import pdb; pdb.set_trace()
+
         # trainer and callbacks
         trainer_kwargs = dict()
 
